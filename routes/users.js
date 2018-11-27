@@ -136,7 +136,28 @@ router.get('/findRecordById', function (req, res, next) {
   });
 });
 
-// 显示查询日期的记录 
+// 根据日期ID查询记录 
+router.get('/findRecordByDateId', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.findRecordByDateId, [param.uid , param.date], function (err, result) {
+      if (result) {
+        console.log(result)
+      }     
+      responseJSON(res, result);  
+      connection.release();
+    });
+  });
+});
+
+// 管理员
+// 根据日期查询记录
 router.get('/findRecordByDate', function (req, res, next) {
   // 从连接池获取连接 
   pool.getConnection(function (err, connection) {
@@ -146,15 +167,11 @@ router.get('/findRecordByDate', function (req, res, next) {
     // 获取前台页面传过来的参数  
     var param = req.query || req.params;
     // 建立连接 增加一个用户信息 
-    connection.query(userSQL.findRecordByDate, [param.uid , param.date], function (err, result) {
+    connection.query(userSQL.findRecordByDate, [param.date], function (err, result) {
       if (result) {
         console.log(result)
-      }
-
-      // 以json形式，把操作结果返回给前台页面     
-      responseJSON(res, result);
-
-      // 释放连接  
+      }     
+      responseJSON(res, result);  
       connection.release();
     });
   });

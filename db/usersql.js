@@ -4,7 +4,8 @@ var UserSQL = {
   queryAll:'SELECT * FROM User',  
   findUser:'SELECT * FROM User WHERE username = ? And password = ? ',
   findRecordById:'SELECT * FROM Meal WHERE uid = ? ',
-  findRecordByDate:'SELECT * FROM Meal WHERE uid = ? And date = ?',
+  findRecordByDateId:'SELECT * FROM Meal WHERE uid = ? And date = ?',
+  findRecordByDate: 'SELECT * FROM Meal WHERE date = ?',
   alterMeal: 'UPDATE Meal SET breakfast = ?,lunch = ?, dinner = ?, nightsnack = ? WHERE uid = ? And date = ?'
 };
 module.exports = UserSQL;
