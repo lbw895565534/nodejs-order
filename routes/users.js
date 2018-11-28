@@ -177,4 +177,71 @@ router.get('/findRecordByDate', function (req, res, next) {
   });
 });
 
+// 查询早中晚餐
+router.get('/findBreakfastByDate', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.findBreakfastByDate, [param.date], function (err, result) {
+      if (result) {
+        console.log(result[0].B)
+      }     
+      if (!result) {
+        result[0].B = 0;
+      }
+      responseJSON(res, result[0].B);  
+      connection.release();
+    });
+  });
+});
+
+router.get('/findLunchByDate', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.findLunchByDate, [param.date], function (err, result) {
+      if (result) {
+        console.log(result)
+      }     
+      if (!result) {
+        result[0].L = 0;
+      }
+      responseJSON(res, result[0].L);  
+      connection.release();
+    });
+  });
+});
+
+router.get('/findDinnerByDate', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.findDinnerByDate, [param.date], function (err, result) {
+      if (result) {
+        console.log(result)
+      }     
+      if (!result) {
+        result[0].D = 0;
+      }
+      responseJSON(res, result[0].D);  
+      connection.release();
+    });
+  });
+});
+
 module.exports = router;
