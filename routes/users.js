@@ -30,15 +30,68 @@ router.get('/findUser', function (req, res, next) {
       if (result) {
         console.log(result)
       }
-
+      else {
+        console.log(err);
+      }
       // 以json形式，把操作结果返回给前台页面     
+      console.log(result);
       responseJSON(res, result);
-
       // 释放连接  
       connection.release();
     });
   });
 });
+// 用户名密码登录 
+router.get('/setPassword', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.setPassword, [param.password, param.username], function (err, result) {
+      if (result) {
+        console.log(result)
+      }
+      else {
+        console.log(err);
+      }
+      // 以json形式，把操作结果返回给前台页面     
+      console.log(result);
+      responseJSON(res, result);
+      // 释放连接  
+      connection.release();
+    });
+  });
+});
+// 用户全部获取 
+router.get('/getUsers', function (req, res, next) {
+  // 从连接池获取连接 
+  pool.getConnection(function (err, connection) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    // 获取前台页面传过来的参数  
+    var param = req.query || req.params;
+    // 建立连接 增加一个用户信息 
+    connection.query(userSQL.getUsers, function (err, result) {
+      if (result) {
+        console.log(result)
+      }
+      else {
+        console.log(err);
+      }
+      // 以json形式，把操作结果返回给前台页面     
+      console.log(result);
+      responseJSON(res, result);
+      // 释放连接  
+      connection.release();
+    });
+  });
+});
+
 // 添加用户
 router.get('/insertUser', function (req, res, next) {
   // 从连接池获取连接 
@@ -189,12 +242,13 @@ router.get('/findBreakfastByDate', function (req, res, next) {
     // 建立连接 增加一个用户信息 
     connection.query(userSQL.findBreakfastByDate, [param.date], function (err, result) {
       if (result) {
-        console.log(result[0].B)
-      }     
-      if (!result) {
-        result[0].B = 0;
+        console.log(result);
+        console.log(1);
       }
-      responseJSON(res, result[0].B);  
+      else {
+        result = [];
+      }  
+      responseJSON(res, result);  
       connection.release();
     });
   });
@@ -212,11 +266,12 @@ router.get('/findLunchByDate', function (req, res, next) {
     connection.query(userSQL.findLunchByDate, [param.date], function (err, result) {
       if (result) {
         console.log(result)
-      }     
-      if (!result) {
-        result[0].L = 0;
-      }
-      responseJSON(res, result[0].L);  
+      }    
+      else {
+        result = [];
+      }   
+      console.log(result)
+      responseJSON(res, result);  
       connection.release();
     });
   });
@@ -235,10 +290,10 @@ router.get('/findDinnerByDate', function (req, res, next) {
       if (result) {
         console.log(result)
       }     
-      if (!result) {
-        result[0].D = 0;
-      }
-      responseJSON(res, result[0].D);  
+      else {
+        result = [];
+      }  
+      responseJSON(res, result);  
       connection.release();
     });
   });
